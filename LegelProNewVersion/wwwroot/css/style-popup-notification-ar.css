@@ -1,0 +1,24 @@
+.modal-dialog {
+    max-width: 50%;
+    margin-top: 250px;
+    background-color: white;
+}
+
+.modal-header {
+    height: 55px;
+    background-color: #0d9edf;
+}
+
+.close {
+    position:relative;
+    background-color:#0d9edf;
+    height: 50px;
+    border: none;
+    padding:0;
+    position: relative;
+    color: black;
+    top:0px
+}
+.modal-backdrop.show {
+    opacity:0;
+}

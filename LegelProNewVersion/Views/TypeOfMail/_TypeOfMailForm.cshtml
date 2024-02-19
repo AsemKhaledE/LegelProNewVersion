@@ -1,0 +1,167 @@
+﻿@model TypeOfMailViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+@{
+    List<SelectListItem> dropdownItems = ViewData["ManagementItem"] as List<SelectListItem>;
+
+}
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="exampleModalLabel">@localizer["add-a-new-type-of-mail"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="typeOfMailId" value="@Model?.TypeOfMailId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="TypeOfMailArabicName" id="typeOfMailArabicName" name="TypeOfMailArabicName">@localizer["name-arabic"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="TypeOfMailArabicName" type="text" class="form-control" required="required" />
+                            <span id="validationAr" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="TypeOfMailEnglishName" id="typeOfMailEnglishName" name="TypeOfMailEnglishName">@localizer["name-english"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="TypeOfMailEnglishName" type="text" class="form-control" required="required" />
+                            <span id="validationEn" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["Department"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="DepartmentId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownItems" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["TypeMail"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="tbl_TypeMail" class="form-control icon-down" style="width:100%; height:45px;" asp-items="Html.GetEnumSelectList<tbl_TypeMail>()" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <span asp-validation-for="TypeOfMailEnglishName" class="text-danger"></span>
+                    <span asp-validation-for="TypeOfMailArabicName" class="text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <a href="/TypeOfMail/Index" type="button" id="mainCloseBtn" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" id="submitButton" class="btn btn-primary color-btnSave" disabled>@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        // Initialize debounce timers for English and Arabic input fields
+        var debounceTimerEnglish;
+        var debounceTimerArabic;
+
+        // Event listener for English name input
+        $('#TypeOfMailEnglishName').on('input', debounce(function () {
+            var typeOfMailEnglishName = $('#TypeOfMailEnglishName').val();
+            // Validate English name
+            validate('/TypeOfMail/CheckEnglishName', { TypeOfMailEnglishName: typeOfMailEnglishName }, '#validationEn');
+        }, 500));
+
+        // Event listener for Arabic name input
+        $('#TypeOfMailArabicName').on('input', debounce(function () {
+            var typeOfMailArabicName = $('#TypeOfMailArabicName').val();
+            // Validate Arabic name
+            validate('/TypeOfMail/CheckArabicName', { TypeOfMailArabicName: typeOfMailArabicName }, '#validationAr');
+        }, 500));
+
+        // Validation function
+        function validate(apiEndpoint, inputData, validationResultSelector) {
+            $.ajax({
+                url: apiEndpoint,
+                type: 'POST',
+                data: inputData,
+            })
+                .done(function (result) {
+                    var validationResultElement = $(validationResultSelector);
+                    if (result) {
+                        // Display validation error message
+                        validationResultElement.html('<span class="text-danger">' + result + '</span>');
+                        // If validation fails, disable both inputs and the submit button
+                        $('#submitButton').prop('disabled', true);
+                    } else {
+                        // Clear validation error message
+                        validationResultElement.html("");
+                        // If validation passes, enable both inputs and update the submit button state
+                        $('#TypeOfMailEnglishName, #TypeOfMailArabicName, #submitButton').prop('disabled', false);
+                        updateSubmitButtonState();
+                    }
+                })
+                .fail(function (error) {
+                    var validationResultElement = $(validationResultSelector);
+                    // Display validation error message
+                    validationResultElement.html('<span class="text-danger">' + result + '</span>');
+                    // If there's a validation error, disable both inputs and the submit button
+                    $('#TypeOfMailEnglishName, #TypeOfMailArabicName, #submitButton').prop('disabled', true);
+                });
+        }
+
+        // Function to update submit button state
+        function updateSubmitButtonState() {
+            var isEnglishNameEmpty = $('#TypeOfMailEnglishName').val().trim() === '';
+            var isArabicNameEmpty = $('#TypeOfMailArabicName').val().trim() === '';
+
+            // Enable the submit button only if both inputs have values
+            var isSubmitButtonDisabled = isEnglishNameEmpty || isArabicNameEmpty || $('#validationEn').text() || $('#validationAr').text();
+            $('#submitButton').prop('disabled', isSubmitButtonDisabled);
+        }
+
+        // Trigger initial check
+        updateSubmitButtonState();
+    });
+
+    // Debounce function
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            // setTimeout => This helps reduce the number of API calls while the user is typing fast.
+            timer = setTimeout(func, delay);
+        };
+    }
+    // if ApproveStatusId == 3
+    document.getElementById('ApproveStatusId').addEventListener('change', function () {
+        var selectedValue = this.value;
+        var reasonLabel = document.getElementById('reasonLabel');
+        var reasonInput = document.getElementById('reasonInput');
+
+        if (selectedValue == 3) {
+            reasonLabel.style.display = 'block';
+            reasonInput.style.display = 'block';
+        } else {
+            reasonLabel.style.display = 'none';
+            reasonInput.style.display = 'none';
+        }
+    });
+</script>

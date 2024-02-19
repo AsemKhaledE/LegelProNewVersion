@@ -1,0 +1,90 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@model LegelProNewVersion.ViewModels.AllSystemConfigViewModel
+@inject IViewLocalizer localizer
+@{
+    ViewBag.Title = "Style2";
+    Layout =null;
+}
+
+<link href="/css/style2.css" rel="stylesheet" />
+<link href="/css/dropdownlist-style1,2.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<body>
+    <style-login>
+        <div class="border-login">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <span class="language">
+                <partial name="_SelectLanguagePartial" />
+            </span><!-- End SelectLanguage -->
+        </div>
+        <div>
+            <img class="img" src="/img/logoo.jpg" />
+        </div>
+        <div class="text-login-color">
+            @localizer["log"]<text-login-color2> @localizer["in"]</text-login-color2>
+        </div>
+        <h5>@localizer["please_enter_personal_data"]</h5>
+        <form asp-action="GetMenuStyle">
+        <div class="col-md-12">
+            <div class="d-flex flex-row align-items-center mb-3">
+                <div class="form-outline border-input-email">
+                    <input placeholder="@localizer["email"]" id="typeEmailX-2" class="input-email" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-auto">
+            <div class="d-flex flex-row align-items-center mb-auto">
+                <div class="form-outline border-input-password">
+                    <input type="password" placeholder="@localizer["password"]" id="typeEmailX-2" class="input-password" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-auto">
+            <div class="d-flex flex-row align-items-center mb-auto">
+                <div class="form-outline border-input-otp">
+                    <input type="password" placeholder="@localizer["please_enter_otp_number"]" id="typeEmailX-2" class="input-otp" />
+                </div>
+            </div>
+        </div>
+        <div class="row-cols-md-6">
+            <div class="form-group">
+                <div style="text-align: center; margin-top:10px ;">
+                    <label class="text-bg-info">@ViewBag.SuccessMessage</label>
+                </div>
+            </div>
+        </div>
+        <section class="container">
+            <div class="dropdown">
+                <img src="/img/angle-small-down.png" />
+                <select name="one" class="dropdown-select">
+                    <option value="">@localizer["please_select-name-company"]</option>
+                    <option value="@localizer["banque_misr_administrative_affairs_sector"]">@localizer["banque_misr_administrative_affairs_sector"]</option>
+                </select>
+
+            </div>
+        </section>
+
+        <div class="form-group">
+                @* <a class="btn-login" href="/MainStyle/Home">@localizer["login"]</a> *@
+                <input type="submit" value="@localizer["login"]" class="btn-login" />
+        </div>
+            </form>
+
+        <div class="form-group">
+            <forgotten_password>@localizer["forgotten_password"]</forgotten_password>
+        </div>
+
+        <div class="property_rights">
+            <ehm> E,H,M</ehm>@localizer["property-rights"] &copy; @localizer["2023"]
+            <br />
+            @localizer["for-a-company"]
+            <br />
+            <ehm>@localizer["issuance"] @localizer["6.0"]</ehm>
+        </div>
+        </div>
+    </style-login>
+</body>

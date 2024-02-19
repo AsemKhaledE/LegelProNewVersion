@@ -1,0 +1,10 @@
+.style-btn-approve {
+    position: absolute;
+    left: 320px;
+    top: 19px;
+}
+.style-btn-denial {
+    position: absolute;
+    left: 450px;
+    top: 19px;
+}

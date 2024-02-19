@@ -1,0 +1,134 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model LegelProNewVersion.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login3";
+    Layout = null;
+}
+<link href="/css/style3.css" rel="stylesheet" />
+<link href="/css/dropdownlist-style3.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<body>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <div class="fluid-responsive container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <img src="" id="image" style="height:100%;width:70%;" />
+            </div>
+            <div class="col-md-3" style="overflow: auto;">
+                <div class="col-md-10 mx-auto">
+                    <style-login>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                            <span class="language">
+                                <partial name="_SelectLanguagePartial" />
+                            </span><!-- End SelectLanguage -->
+                        </div>
+                        <div>
+                            <img class="img" src="/img/logoo.jpg" />
+                        </div>
+                        <div class="text-login-color">
+                            @localizer["log"]<text-login-color2> @localizer["in"]</text-login-color2>
+                        </div>
+                        <h5>@localizer["please_enter_personal_data"]</h5>
+                        <form asp-action="Style3">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-row align-items-center mb-3">
+                                    <div class="form-outline border-input-email">
+                                        <input asp-for="Email" placeholder="@localizer["email"]" aria-required="true" placeholder="name@example.com" class="input-email" maxlength="50" />
+                                    </div>
+                                    <span asp-validation-for="Email" class="validation-input"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-auto">
+                                <div class="d-flex flex-row align-items-center mb-auto">
+                                    <div class="form-outline border-input-password">
+                                        <input asp-for="Password" placeholder="@localizer["Password"]" autocomplete="new-password" aria-required="true" placeholder="password" class="input-password" maxlength="35" />
+                                    </div>
+                                    <span asp-validation-for="Password" class="validation-input"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-auto">
+                                <div class="d-flex flex-row align-items-center mb-auto">
+                                    <div class="form-outline border-input-otp">
+                                        <input type="password" placeholder="@localizer["please_enter_otp_number"]" id="typeEmailX-2" class="input-otp" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-cols-md-6">
+                                <div class="form-group">
+                                    <div style="text-align: center; margin-top:10px ;">
+                                        <label class="text-bg-info">@ViewBag.SuccessMessage</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <section class="container">
+                                <div class="dropdown">
+                                    <img src="/img/angle-small-down.png" />
+                                    <select name="one" class="dropdown-select">
+                                        <option value="">@localizer["please_select-name-company"]</option>
+                                        <option value="@localizer["banque_misr_administrative_affairs_sector"]">@localizer["banque_misr_administrative_affairs_sector"]</option>
+                                    </select>
+
+                                </div>
+                            </section>
+                            <div asp-validation-summary="ModelOnly" class="custom-validation-summary" role="alert"></div>
+                            <div class="form-group">
+                                @* <a class="btn-login" href="/MainStyle/Home">@localizer["login"]</a> *@
+                                <input type="submit" value="@localizer["Login"]" class="btn-login" />
+                            </div>
+                        </form>
+
+                        <div class="form-group">
+                            <forgotten_password>@localizer["forgotten_password"]</forgotten_password>
+                        </div>
+
+                        <div class="property_rights">
+                            <ehm> E,H,M</ehm>@localizer["property-rights"] &copy; @localizer["2023"]
+                            <br />
+                            @localizer["for-a-company"]
+                            <br />
+                            <ehm>@localizer["issuance"] @localizer["6.0"]</ehm>
+                        </div>
+                    </style-login>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    let image = document.getElementById('image');
+    var details;
+    async function getData() {
+        
+        await $.ajax({
+            url: '/api/Setting/getData',
+            type: 'GET',
+            success: function (result) {
+                
+                details = result;
+            },
+            error: function () { alert("Whooaaa! Something went wrong..") },
+        });
+    }
+    
+    $(document).ready(function () {
+        var result = getData();
+        $.when(result).done(function (statistic) {
+            
+            let imgs = details.images;
+            let interval = details.interval * 100;
+
+            setInterval(function () {
+                let random = Math.floor(Math.random() * imgs.length);
+                image.src = "/img/" + imgs[random];
+            }, interval)
+        });
+    });
+</script>

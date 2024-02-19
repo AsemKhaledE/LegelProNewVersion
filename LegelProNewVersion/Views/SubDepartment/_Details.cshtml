@@ -1,0 +1,47 @@
+﻿@model tbl_SubDepartment
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<form class="row g-3">
+    <input type="hidden" asp-for="SubDepartmentId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="SubDepartmentArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="SubDepartmentArabicName" type="text" class="form-control" />
+            </div>
+
+            <div class="col-2">
+                <label asp-for="SubDepartmentEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="SubDepartmentEnglishName" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label> @localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="DepartmentId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Departments" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.ApproveStatus" class="form-control"> </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="ReasonForRejection" type="text" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a type="button" href="/SubDepartment/Index" class="btn btn-secondary">@localizer["close"]</a>
+    </div>
+</form>

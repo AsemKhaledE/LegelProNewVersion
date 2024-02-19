@@ -1,0 +1,109 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@localizer["add-a-new-client"]</h5>
+                <button type="button" id="closeClientAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-2">
+                        <label>@localizer["name"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" required="required" />
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["national-number"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" required="required" />
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["identification-number"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" required="required" />
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["the-device-name"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" required="required" />
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["bank"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="dropdown" style="width:100%; height:45px;">
+                            <option value="">@localizer["Please-enter-the-bank-name"]</option>
+                            <option value="china">Great Wall of China</option>
+                            <option value="chirst" required>Christ the Redeemer Satue</option>
+                            <option value="machu" disabled>Machu Picchu</option>
+                            <option value="chichen">Chichen Itza</option>
+                            <option value="colossem">The Roman Colosseum</option>
+                            <option value="petra">Petra</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["branch"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="dropdown" style="width:100%; height:45px;">
+                            <option value="">@localizer["Please-enter-the-branch-name"]</option>
+                            <option value="china">Great Wall of China</option>
+                            <option value="chirst" required>Christ the Redeemer Satue</option>
+                            <option value="machu" disabled>Machu Picchu</option>
+                            <option value="chichen">Chichen Itza</option>
+                            <option value="colossem">The Roman Colosseum</option>
+                            <option value="petra">Petra</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["keywords"]</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" required="required" />
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["address"]</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea  cols="93" rows="3" class="input-box">                  
+                    </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="mainCloseClientAddBtn" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</button>
+                <button type="button" class="btn btn-primary color-btnSave" id="btnAdd">@localizer["save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalClientAddBtn').click(function () {
+
+        $('#addClientModal').modal('show');
+    });
+    $('#closeClientAddBtn').click(function () {
+
+        $('#addClientModal').modal('toggle');
+    });
+    $('#mainCloseClientAddBtn').click(function () {
+
+        $('#addClientModal').modal('toggle');
+    });
+</script>

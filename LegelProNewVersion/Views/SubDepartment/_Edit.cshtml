@@ -1,0 +1,75 @@
+﻿@model tbl_SubDepartment
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+
+<form asp-action="Edit" class="row g-3" id="entityForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="SubDepartmentId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="SubDepartmentArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="SubDepartmentArabicName" type="text" class="form-control" required="required" maxlength="50" />
+            </div>
+
+            <div class="col-2">
+                <label asp-for="SubDepartmentEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="SubDepartmentEnglishName" type="text" class="form-control" required="required" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label> @localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="DepartmentId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Departments" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="ApproveStatusId" asp-items="ViewBag.ApproveStatus" class="form-control" id="approveStatusId"></select>
+            </div>
+            <div class="col-2" id="reason">
+                <label>@localizer["ReasonForRejection"] </label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" id="reasonForRejection" />
+            </div>
+        </div>
+        <span asp-validation-for="SubDepartmentArabicName" class="text-danger"></span>
+        <span asp-validation-for="SubDepartmentEnglishName" class="text-danger"></span>
+    </div>
+    <div class="modal-footer">
+        <a type="button" href="/SubDepartment/Index" class="btn btn-secondary">@localizer["close"]</a>
+        <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#approveStatusId').change(function () {
+            if ($(this).val() !== '3') {
+                $('#reasonForRejection').val('').hide();
+                $('#reason').hide();
+            }
+            else {
+                $('#reason').show();
+                $('#reasonForRejection').show();
+            }
+        });
+    });
+</script>

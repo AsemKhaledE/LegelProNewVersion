@@ -1,0 +1,47 @@
+﻿@model tbl_Department
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<form  class="row g-3">
+    <input type="hidden" asp-for="DepartmentId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="DepartmentArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="DepartmentArabicName" type="text" class="form-control" />
+            </div>
+
+            <div class="col-2">
+                <label asp-for="DepartmentEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="DepartmentEnglishName" type="text" class="form-control"  />
+            </div>
+            <div class="col-2">
+                <label> @localizer["Branch"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="BranchId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Branchs" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.ApproveStatus" class="form-control"> </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="ReasonForRejection" type="text" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a type="button" href="/Department/Index" class="btn btn-secondary">@localizer["close"]</a>
+    </div>
+</form>

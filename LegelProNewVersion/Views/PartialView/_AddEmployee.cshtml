@@ -1,0 +1,174 @@
+﻿<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="AddEmployee">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
+                    <button type="button" id="closeUserAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label>Employee Arabic Name</label>
+@*                             <label asp-for="EmployeeArabicName">Employee Arabic Name</label>
+ *@                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Employee Arabic Name" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>Employee English Name</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>الفرع</label>
+                        </div>
+                        <div class="col-md-4">
+@*                             <select id="branches" asp-for="BranchId" asp-items="Model.Branches" class="form-control"></select>
+ *@                        </div>
+                        <div class="col-2">
+                            <label>القسم</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="dropdown" class="form-control icon-down" style="width:100%; height:45px;">
+                                <option value=""></option>
+                                <option value=""></option>
+                                <option value="chirst" required>Christ the Redeemer Satue</option>
+                                <option value="machu" disabled>Machu Picchu</option>
+                                <option value="chichen">Chichen Itza</option>
+                                <option value="colossem">The Roman Colosseum</option>
+                                <option value="petra">Petra</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>الوظيفة</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="dropdown" class="form-control icon-down" style="width:100%; height:45px;">
+                                <option value=""></option>
+                                <option value="chirst" required>Christ the Redeemer Satue</option>
+                                <option value="machu" disabled>Machu Picchu</option>
+                                <option value="chichen">Chichen Itza</option>
+                                <option value="colossem">The Roman Colosseum</option>
+                                <option value="petra">Petra</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>نوع الوظيفة</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="dropdown" class="form-control icon-down" style="width:100%; height:45px;">
+                                <option value="chirst" required>Christ the Redeemer Satue</option>
+                                <option value="machu" disabled>Machu Picchu</option>
+                                <option value="chichen">Chichen Itza</option>
+                                <option value="colossem">The Roman Colosseum</option>
+                                <option value="petra">Petra</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>المنصب</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="dropdown" class="form-control icon-down" style="width:100%; height:45px;">
+                                <option value="chirst" required>Christ the Redeemer Satue</option>
+                                <option value="machu" disabled>Machu Picchu</option>
+                                <option value="chichen">Chichen Itza</option>
+                                <option value="colossem">The Roman Colosseum</option>
+                                <option value="petra">Petra</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>رقم التليفون</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>تاريخ بدء المستخدم</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>تاريخ انتهاء المستخدم</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>أسم المستخدم</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>البريد الالكتروني</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>العنوان</label>
+                        </div>
+                        <div class="col-md-10">
+                            <textarea cols="93" rows="2" class="input-box">                  
+                    </textarea>
+                        </div>
+                        <div class="col-1">
+                            <label>نشط</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-check-input" type="checkbox" />
+                            <label class="form-check-label">
+                            </label>
+                        </div>
+                        <div class="col-1">
+                            <label>موافق</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-check-input" type="checkbox" />
+                            <label class="form-check-label">
+                            </label>
+                        </div>
+                        <div class="col-1">
+                            <label>رفض</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-check-input" type="checkbox" />
+                            <label class="form-check-label">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="mainCloseUserAddBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary color-btnSave" id="btnAdd">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalUserAddBtn').click(function () {
+
+        $('#addUserModal').modal('show');
+    });
+    $('#closeUserAddBtn').click(function () {
+
+        $('#addUserModal').modal('toggle');
+    });
+    $('#mainCloseUserAddBtn').click(function () {
+
+        $('#addUserModal').modal('toggle');
+    });
+</script>

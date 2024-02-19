@@ -1,0 +1,149 @@
+﻿@model MailerViewModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="exampleModalLabel">@localizer["add-a-new-mailer"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="mangementId" value="@Model?.MailerId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="MailerArabicName" id="mailerArabicName" name="MailerArabicName">@localizer["name-arabic"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="MailerArabicName" type="text" class="form-control" required="required" />
+                            <span id="validationAr" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="MailerEnglishName" id="mailerEnglishName" name="MailerEnglishName">@localizer["name-english"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="MailerEnglishName" type="text" class="form-control" required="required" />
+                            <span id="validationEn" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["ApproveStatus"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="ApproveStatusId" asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.ApproveStatus" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-2" id="reasonLabel" style="display: none;">
+                            <label asp-for="ReasonForRejection">@localizer["ReasonForRejection"]</label>
+                        </div>
+                        <div class="col-md-4" id="reasonInput" style="display: none;">
+                            <input asp-for="ReasonForRejection" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/Mailer/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" id="submitButton" class="btn btn-primary color-btnSave" disabled>@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        var debounceTimerEnglish;
+        var debounceTimerArabic;
+
+        $('#MailerEnglishName').on('input', debounce(function () {
+            var mailerEnglishName = $('#MailerEnglishName').val();
+            validate('/Mailer/CheckEnglishName', { MailerEnglishName: mailerEnglishName }, '#validationEn');
+        }, 500));
+
+        $('#MailerArabicName').on('input', debounce(function () {
+            var mailerArabicName = $('#MailerArabicName').val();
+            validate('/Mailer/CheckArabicName', { MailerArabicName: mailerArabicName }, '#validationAr');
+        }, 500));
+
+        function validate(apiEndpoint, inputData, validationResultSelector) {
+            $.ajax({
+                url: apiEndpoint,
+                type: 'POST',
+                data: inputData,
+            })
+                .done(function (result) {
+                    var validationResultElement = $(validationResultSelector);
+                    if (result) {
+                        validationResultElement.html('<span class="text-danger">' + result + '</span>');
+                        // If validation fails, disable both inputs and the submit button
+                        $('#submitButton').prop('disabled', true);
+                    } else {
+                        validationResultElement.html("");
+                        // If validation passes, enable both inputs and update the submit button state
+                        $('#MailerEnglishName, #MailerArabicName, #submitButton').prop('disabled', false);
+                        updateSubmitButtonState();
+                    }
+                })
+                .fail(function (error) {
+                    $(validationResultSelector).html('<div class="validation-error">' + error.responseJSON.error + '</div>');
+                    // If there's a validation error, disable both inputs and the submit button
+                    $('#MailerEnglishName, #MailerArabicName, #submitButton').prop('disabled', true);
+                });
+        }
+
+        function updateSubmitButtonState() {
+            var isEnglishNameEmpty = $('#MailerEnglishName').val().trim() === '';
+            var isArabicNameEmpty = $('#MailerArabicName').val().trim() === '';
+
+            // Enable the submit button only if both inputs have values
+            var isSubmitButtonDisabled = isEnglishNameEmpty || isArabicNameEmpty || $('#validationEn').text() || $('#validationAr').text();
+            $('#submitButton').prop('disabled', isSubmitButtonDisabled);
+        }
+
+        // Trigger initial check
+        updateSubmitButtonState();
+    });
+
+    // Debounce function
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            // setTimeout => This helps reduce the number of API calls while the user is typing fast.
+            timer = setTimeout(func, delay);
+        };
+    }
+    // if ApproveStatusId == 3
+    document.getElementById('ApproveStatusId').addEventListener('change', function () {
+        var selectedValue = this.value;
+        var reasonLabel = document.getElementById('reasonLabel');
+        var reasonInput = document.getElementById('reasonInput');
+
+        if (selectedValue == 3) {
+            reasonLabel.style.display = 'block';
+            reasonInput.style.display = 'block';
+        } else {
+            reasonLabel.style.display = 'none';
+            reasonInput.style.display = 'none';
+        }
+    });
+</script>
+

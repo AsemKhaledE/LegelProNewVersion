@@ -1,0 +1,68 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="typesOfMailDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@localizer["details-types-of-mail"]</h5>
+                <button type="button" id="closeTypesOfMailDetailsBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-2">
+                        <label>@localizer["name-arabic"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>عاصم</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["name-english"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>Asem</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["type-of-mail"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>وارد</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["management"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>c3a</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="mainCloseTypesOfMailDetailsBtn" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</button>
+                <button type="button" class="btn btn-primary color-btnSave" id="btnAdd">@localizer["save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalTypesOfMailDetailsBtn').click(function () {
+
+        $('#typesOfMailDetailsModal').modal('show');
+    });
+    $('#closeTypesOfMailDetailsBtn').click(function () {
+
+        $('#typesOfMailDetailsModal').modal('toggle');
+    });
+    $('#mainCloseTypesOfMailDetailsBtn').click(function () {
+
+        $('#typesOfMailDetailsModal').modal('toggle');
+    });
+</script>

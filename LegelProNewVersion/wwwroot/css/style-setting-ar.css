@@ -1,0 +1,21 @@
+.color-icon-setting {
+    background-color: #0d9edf;
+    color: white
+}
+
+.style-icon {
+    width: 35px;
+    font-size: 30px;
+}
+
+.setting-item {
+    color: white;
+    text-align: right;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dropdown-item.setting-item:hover:not(.active) {
+    background-color: #0d9edf;
+    color: yellow;
+}

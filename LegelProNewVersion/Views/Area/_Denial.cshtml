@@ -1,0 +1,43 @@
+﻿@model tbl_Areas
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+
+<form asp-action="DenialSave" method="post" class="row g-3">
+    <input type="hidden" asp-for="AreaId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2" hidden>
+                <label asp-for="AreaArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4" hidden>
+                <input asp-for="AreaArabicName" type="text" class="form-control" maxlength="50" required />
+            </div>
+            <div class="col-2" hidden>
+                <label asp-for="AreaEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4" hidden>
+                <input asp-for="AreaEnglishName" type="text" class="form-control" maxlength="50" required />
+            </div>
+            <div class="col-2" hidden>
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4" hidden>
+                <input asp-for="ApproveStatusId" type="text" class="form-control" maxlength="50" required />
+            </div>
+            <div class="col-2" id="reasonLabel">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" id="reasonForRejection" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+    </div>
+</form>

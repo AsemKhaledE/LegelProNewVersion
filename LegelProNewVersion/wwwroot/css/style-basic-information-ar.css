@@ -1,0 +1,143 @@
+.size-card-header {
+    margin-right: 245px;
+    height: 300px;
+    width: 86%;
+    margin-top: 14px;
+}
+.card-header {
+    line-height: 60px;
+    color: #0d9edf
+}
+
+.icons {
+    line-height: 60px;
+    position: relative;
+    top: 5px;
+}
+    .search-btn-icon {
+    margin-top: -60px;
+    background-color: #0d9edf;
+    width: 110px;
+    height: 60px;
+    position: absolute;
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+    font-size: 15px;
+    left: 210px;
+    color: white;
+    border: none;
+    border: 1px solid #808080;
+    text-indent: 3px;
+}
+
+.btn-search {
+    text-align: center;
+    margin-top: -15%;
+    color: white;
+    background-color: #0d9edf;
+    width: 70px;
+    border: none;
+}
+
+.add-btn-icon {
+    margin-top: -60px;
+    background-color: #922323;
+    width: 170px;
+    height: 60px;
+    position: absolute;
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+    font-size: 19px;
+    left: 30px;
+    color: white;
+    border: none;
+    border: 1px solid #808080;
+    text-indent: 3px;
+}
+
+.button_add {
+    background-image: url(/img/add.png);
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: right 2% bottom 47%;
+    text-align: center;
+    color: white;
+    background-color: #922323;
+    width: 170px;
+    border: none;
+    font-size: 19px;
+    position: relative;
+}
+.div-btn-add {
+    float: left;
+    position: absolute;
+    left: 0;
+}
+.button_search {
+    background-image: url(/img/search.png);
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: right 10% bottom 47%;
+    text-align: center;
+    color: white;
+    background-color: #0d9edf;
+    width: 100px;
+    border: none;
+    font-size: 19px;
+    position: relative;
+}
+.div-btn-search {
+    float: left;
+    position: absolute;
+    left: 185px;
+}
+
+.icon-add {
+    margin-left: 10px;
+}
+
+.drop {
+    margin-top: auto;
+    margin-right: auto;
+    margin-left: -10%;
+}
+
+.text-drop {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.btn-delete-field {
+    left: 0;
+    position: absolute;
+    margin-top: -20px;
+    background-color: #0d9edf;
+    border-color: #0d9edf;
+}
+
+thead {
+    background-color: #0d9edf;
+    color: white;
+}
+
+table {
+    margin-top: auto;
+    text-align: center;
+}
+
+.pagination {
+    position: absolute;
+    left: 15px;
+}
+.result-search {
+    position: absolute;
+    margin-top: 210px;
+}
+.icon-down {
+    background-image: url(/img/down.png);
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: left 3% bottom 47%;
+}

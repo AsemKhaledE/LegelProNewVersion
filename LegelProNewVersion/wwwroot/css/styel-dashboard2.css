@@ -1,0 +1,4 @@
+
+.navbar + .page-body-wrapper {
+    margin-top: -27px;
+}

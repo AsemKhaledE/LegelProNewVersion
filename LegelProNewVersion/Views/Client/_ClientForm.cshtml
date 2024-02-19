@@ -1,0 +1,202 @@
+﻿@model ClientViewModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color:white" class="modal-title" id="exampleModalLabel">@localizer["add-a-new-client"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="clientId" value="@Model?.ClientId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="ClientName" id="clientName" name="ClientName"> @localizer["ClientName"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="ClientName" type="text" class="form-control" required="required" maxlength="50" />
+                            <div id="validationCn"></div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="TheDeviceName" id="theDeviceName" name="TheDeviceName"> @localizer["TheDeviceName"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="TheDeviceName" type="text" class="form-control" required="required" maxlength="50" />
+                            <div id="validationDn"></div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="IdentificationNumber" id="identificationNumber" name="IdentificationNumber"> @localizer["IdentificationNumber"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="IdentificationNumber" type="number" class="form-control" required="required" />
+                            <div id="validationIn"></div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="Keywords"> @localizer["Keywords"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Keywords" type="text" class="form-control" required="required" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="NationalNumber" id="nationalNumber" name="NationalNumber"> @localizer["NationalNumber"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="NationalNumber" type="number" class="form-control" required="required" />
+                            <div id="validationNn"></div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="Address"> @localizer["Address"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Address" type="text" class="form-control" required="required" maxlength="50 " />
+                        </div>
+                        <div class="col-2">
+                            <label> @localizer["Bank"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="BankId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Banks" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label> @localizer["Branch"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="BranchId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Branchs" class="form-control"> </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="/Client/Index" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" id="submitButton" class="btn btn-primary color-btnSave" disabled>@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        // Initialize debounce timers for Client, Device, IdentificationNumber, and NationalNumber input fields
+        var debounceTimerClient;
+        var debounceTimerDevice;
+        var debounceTimerIdentificationNumber;
+        var debounceTimerNationalNumber;
+
+        // Event listener for Client name input
+        $('#ClientName').on('input', debounce(function () {
+            validateInput('ClientName', '/Client/CheckClientName', '#validationCn');
+        }, 500));
+
+        // Event listener for Device name input
+        $('#TheDeviceName').on('input', debounce(function () {
+            validateInput('TheDeviceName', '/Client/CheckDeviceName', '#validationDn');
+        }, 500));
+
+        // Event listener for IdentificationNumber input
+        $('#IdentificationNumber').on('input', debounce(function () {
+            validateInput('IdentificationNumber', '/Client/CheckIdentificationNumber', '#validationIn');
+        }, 500));
+
+        // Event listener for National Number input
+        $('#NationalNumber').on('input', debounce(function () {
+            validateInput('NationalNumber', '/Client/CheckNationalNumber', '#validationNn');
+        }, 500));
+
+        function validateInput(fieldName, apiEndpoint, validationResultSelector) {
+            clearTimeout(getDebounceTimer(fieldName));
+
+            setDebounceTimer(fieldName, setTimeout(function () {
+                var inputValue = $('#' + fieldName).val();
+                $.ajax({
+                    url: apiEndpoint,
+                    type: 'POST',
+                    data: { [fieldName]: inputValue },
+                })
+                    .done(function (result) {
+                        var validationResultElement = $(validationResultSelector);
+                        validationResultElement.html(result ? '<span class="text-danger">' + result + '</span>' : '');
+                        updateSubmitButtonState();
+                    })
+                    .fail(function (error) {
+                        var validationResultElement = $(validationResultSelector);
+                        validationResultElement.html('<span class="text-danger">' + error + '</span>');
+                        disableInputsAndButton();
+                    });
+            }, 500));
+
+            function setDebounceTimer(fieldName, timerId) {
+                switch (fieldName) {
+                    case 'ClientName':
+                        debounceTimerClient = timerId;
+                        break;
+                    case 'TheDeviceName':
+                        debounceTimerDevice = timerId;
+                        break;
+                    case 'IdentificationNumber':
+                        debounceTimerIdentificationNumber = timerId;
+                        break;
+                    case 'NationalNumber':
+                        debounceTimerNationalNumber = timerId;
+                        break;
+                }
+            }
+
+            function getDebounceTimer(fieldName) {
+                switch (fieldName) {
+                    case 'ClientName':
+                        return debounceTimerClient;
+                    case 'TheDeviceName':
+                        return debounceTimerDevice;
+                    case 'IdentificationNumber':
+                        return debounceTimerIdentificationNumber;
+                    case 'NationalNumber':
+                        return debounceTimerNationalNumber;
+                }
+            }
+        }
+
+        function updateSubmitButtonState() {
+            var isClientNameEmpty = $('#ClientName').val().trim() === '';
+            var isDeviceNameEmpty = $('#TheDeviceName').val().trim() === '';
+            var isIdentificationNumberEmpty = $('#IdentificationNumber').val().trim() === '';
+            var isNationalNumberEmpty = $('#NationalNumber').val().trim() === '';
+
+            var isSubmitButtonDisabled = isClientNameEmpty || isDeviceNameEmpty || isNationalNumberEmpty || isIdentificationNumberEmpty || $('#validationCn').text() || $('#validationDn').text() || $('#validationIn').text() || $('#validationNn').text();
+            $('#submitButton').prop('disabled', isSubmitButtonDisabled);
+        }
+
+        function disableInputsAndButton() {
+            $('#ClientName, #TheDeviceName, #IdentificationNumber, #NationalNumber, #submitButton').prop('disabled', true);
+        }
+
+        function debounce(func, delay) {
+            let timer;
+            return function () {
+                clearTimeout(timer);
+                timer = setTimeout(func, delay);
+            };
+        }
+    });
+</script>

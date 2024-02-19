@@ -1,0 +1,34 @@
+.statistics-paragraph {
+ text-align:center;
+}
+.statistics-card {
+    position: relative;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 200px;
+    border-radius: 40px;
+    opacity: 1;
+    border: 2px solid #B5CFE0;
+    background-color: #ddd;
+    font-family: verdana;
+}
+
+    .statistics-card:hover {
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(141deg, #627039 0%, #AFC963 100%) 0% 0% no-repeat padding-box;
+    }
+
+
+.login-text-arabic {
+    margin-right: 10px;
+    text-align: center;
+}
+.login-element-arabic {
+    justify-content: center;
+    float: right;
+}
+
+
+

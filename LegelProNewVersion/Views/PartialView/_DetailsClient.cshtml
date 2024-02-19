@@ -1,0 +1,92 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="ClientdetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@localizer["details-this-client"]</h5>
+                <button type="button" id="closeClientDetailsBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-2">
+                        <label>@localizer["name"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>Asem</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["national-number"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>0123333</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["identification-number"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>653</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["the-device-name"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <p>c3a</p>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["bank"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="dropdown" style="width:100%; height:45px;">
+                            <option value="">القاهرة</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["branch"]</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="dropdown" style="width:100%; height:45px;">
+                            <option value="">القاهرة</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>@localizer["address"]</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea  cols="93" rows="3" class="input-box">     
+                            البحر الاحمر
+                    </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="mainCloseClientDetailsBtn" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</button>
+                <button type="button" class="btn btn-primary color-btnSave" id="btnAdd">@localizer["save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalClientDetailsBtn').click(function () {
+
+        $('#ClientdetailsModal').modal('show');
+    });
+    $('#closeClientDetailsBtn').click(function () {
+
+        $('#ClientdetailsModal').modal('toggle');
+    });
+    $('#mainCloseClientDetailsBtn').click(function () {
+
+        $('#ClientdetailsModal').modal('toggle');
+    });
+</script>

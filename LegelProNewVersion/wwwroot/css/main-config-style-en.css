@@ -1,0 +1,46 @@
+.nav-tabs .nav-link {
+    text-decoration: none;
+    color: gray;
+
+}
+
+    .nav-tabs .nav-link.active {
+        text-decoration: none;
+        color: #2B2B2B !important;
+    }
+
+.navbar-toggler {
+    color: #FFFFFF !important;
+}
+.nav-tabs {
+    margin-top: 50px;
+}
+body{
+    background-color:ButtonHighlight;
+}
+.activeDirectory {
+    display: none
+}
+.btn-submit {
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    right: 190px;
+    margin-top:-2%;
+}
+.btn-back {
+    position: absolute;
+    width: 120px;
+    height: 40px;
+    right: 50px;
+    margin-top: -2%;
+}
+/*****************************************/
+/*body {
+    margin-top: 20px;
+    color: #1a202c;
+    text-align: left;
+    background-color: #e2e8f0;
+}
+*/
+

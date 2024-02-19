@@ -1,0 +1,60 @@
+﻿@model tbl_Areas
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<form asp-action="Edit" class="row g-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AreaId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="AreaArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="AreaArabicName" type="text" class="form-control" maxlength="50" required />
+            </div>
+            <div class="col-2">
+                <label asp-for="AreaEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="AreaEnglishName" type="text" class="form-control" maxlength="50" required />
+            </div>
+            <div class="col-2" hidden>
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4" hidden>
+                <select asp-for="ApproveStatusId" asp-items="ViewBag.ApproveStatus" class="form-control" id="approveStatusId"></select>
+            </div>
+            @*             <div class="col-2" id="reasonLabel">
+            <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+            <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" id="reasonForRejection" />
+            </div> *@
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/Area/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+        <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    // $(document).ready(function () {
+    //     $('#approveStatusId').change(function () {
+    //         if ($(this).val() !== '3') {
+    //             $('#reasonForRejection').val('').hide();
+    //             $('#reasonLabel').hide();
+    //         }
+    //         else {
+    //             $('#reasonLabel').show();
+    //             $('#reasonForRejection').show();
+    //         }
+    //     });
+    // });
+</script>

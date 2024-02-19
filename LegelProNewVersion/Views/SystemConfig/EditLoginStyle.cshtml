@@ -1,0 +1,87 @@
+﻿@model LegelProNewVersion.ViewModels.EditLoginStyleViewModel
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link href="~/css/font.css" rel="stylesheet" />
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="/SystemConfig/MainConfig">System Config</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">Login Style</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/SystemConfig/MainStyle">Main Style</a>
+    </li>
+</ul>
+
+<form asp-action="EditLoginStyle">
+    <input type="hidden" asp-for="Id"/>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="StyleNameArabic" class="control-label">StyleName Arabic</label>
+            <input asp-for="StyleNameArabic" class="form-control" />
+            <span asp-validation-for="StyleNameArabic" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="StyleNameEnglish" class="control-label"></label>
+            <input asp-for="StyleNameEnglish" class="form-control" />
+            <span asp-validation-for="StyleNameEnglish" class="text-danger"></span>
+        </div>
+@*         <div class="col-md-4 mb-3">
+            <label asp-for="TextColor" class="control-label"></label>
+            <input asp-for="TextColor" class="form-control" />
+            <span asp-validation-for="TextColor" class="text-danger"></span>
+        </div> *@
+        <div class="col-md-4 mb-3">
+            <label asp-for="TextColor" class="control-label" for="colorPicker">TextColor:</label>
+            <input asp-for="TextColor" class="form-control" type="color" id="colorPicker" value="@ViewBag.ThemeTextColor" onchange="updateColor()">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="TextFont" class="control-label"></label>
+            <input asp-for="TextFont" class="form-control" />
+            <span asp-validation-for="TextFont" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="LoginColor" class="control-label" for="colorPicker">LoginColor:</label>
+            <input asp-for="LoginColor" class="form-control" type="color" id="colorPicker" value="@ViewBag.LoginColor" onchange="updateColor()">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="LoginBackground" class="control-label" for="colorPicker">LoginBackground:</label>
+            <input asp-for="LoginBackground" class="form-control" type="color" id="colorPicker" value="@ViewBag.ThemeBackgroundColor" onchange="updateColor()">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="TimeInterval" class="control-label"></label>
+            <input asp-for="TimeInterval" class="form-control" />
+            <span asp-validation-for="TimeInterval" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="LoginPath" class="control-label"></label>
+            <input asp-for="LoginPath" class="form-control" />
+            <span asp-validation-for="LoginPath" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="IsMultiImage" class="control-label"></label>
+            <input asp-for="IsMultiImage" type="checkbox" name="IsMultiImage" value="true" />
+            <span asp-validation-for="IsMultiImage" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-outline-info" />
+            <a asp-action="LoginStyle" class="btn btn-outline-info">Back to List</a>
+        </div>
+    </div>
+</form>
+<script>
+    function updateColor() {
+        // Get the selected color value
+        debugger
+        var selectedColor = document.getElementById("colorPicker").value;
+        // Display the selected color
+        debugger
+        document.documentElement.style.setProperty('colorPicker', '@ViewBag.ThemeBackgroundColor');
+    }
+</script>

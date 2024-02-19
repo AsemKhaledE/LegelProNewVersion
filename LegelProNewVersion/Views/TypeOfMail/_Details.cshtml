@@ -1,0 +1,43 @@
+﻿@model tbl_TypeOfMail
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<form class="row g-3">
+    <input type="hidden" asp-for="TypeOfMailId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="TypeOfMailArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="TypeOfMailArabicName" type="text" class="form-control"  />
+            </div>
+            <div class="col-2">
+                <label asp-for="TypeOfMailEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="TypeOfMailEnglishName" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label>الادارة</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="DepartmentId" readonly class="form-control icon-down" style="width:100%; height:45px;" asp-items=" ViewBag.Departments" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>المنطقة</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="tbl_TypeMail" readonly class="form-control icon-down" style="width:100%; height:45px;" asp-items="Html.GetEnumSelectList<tbl_TypeMail>()" class="form-control">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/TypeOfMail/Index" type="button"  class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+    </div>
+</form>

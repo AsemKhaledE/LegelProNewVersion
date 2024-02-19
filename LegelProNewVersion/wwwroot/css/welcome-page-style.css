@@ -1,0 +1,17 @@
+
+.style-logo {
+    display: block;
+    margin-left: 22%;
+    margin-right: auto;
+    margin-top:50px;
+}
+.text-en {
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+    margin-top: 100px;
+}
+.text-ar {
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}

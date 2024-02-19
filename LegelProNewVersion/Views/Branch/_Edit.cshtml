@@ -1,0 +1,122 @@
+﻿@model tbl_Branch
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<form asp-action="Edit" class="row g-3" id="checkBranchForm">
+    <input type="hidden" asp-for="BranchId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="BranchArabicName" id="branchArabicName" name="BranchArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="BranchArabicName" type="text" class="form-control" maxlength="50"/>
+                <span id="validationAr" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="BranchEnglishName" id="branchEnglishName" name="BranchEnglishName">@localizer["name-english"]</label>
+                <span id="validationEn" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="BranchEnglishName" type="text" class="form-control" maxlength="50"/>
+            </div>
+            <div class="col-2">
+                <label>@localizer["areas"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="AreaId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Areas" class="form-control"></select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="ApproveStatusId" asp-items="ViewBag.ApproveStatus" class="form-control" id="approveStatusId"></select>
+            </div>
+            <div class="col-2" id="reason">
+                <label >@localizer["ReasonForRejection"] </label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" id="reasonForRejection" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/Branch/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+        <button type="submit" id="submitUpdateButton" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            // Debounce function
+            function debounce(func, delay) {
+                let timer;
+                return function () {
+                    clearTimeout(timer);
+                    // setTimeout => This helps reduce the number of API calls while the user is typing fast.
+                    timer = setTimeout(func, delay);
+                };
+            }
+
+            // Validation for Branch Names
+            function validateName(apiEndpoint, inputName, validationResultSelector) {
+                var inputValue = $('#' + inputName).val();
+
+                $.ajax({
+                    url: apiEndpoint,
+                    type: 'POST',
+                    data: { [inputName]: inputValue },
+                })
+                    .done(function (result) {
+                        var validationResultElement = $(validationResultSelector);
+                        if (result) {
+                            validationResultElement.html('<span class="alert alert-danger">' + result + '</span>');
+                            // If validation fails, disable the input and the submit button
+                            $('#' + inputName + ', #submitUpdateButton').prop('disabled', true);
+                        } else {
+                            validationResultElement.html("");
+                            // If validation passes, enable the input and update the submit button state
+                            $('#' + inputName + ', #submitUpdateButton').prop('disabled', false);
+                            updateSubmitButtonState();
+                        }
+                    })
+                    .fail(function (error) {
+                        $(validationResultSelector).html('<div class="validation-error">' + error.responseJSON.error + '</div>');
+                        // If there's a validation error, disable the input and the submit button
+                        $('#' + inputName + ', #submitUpdateButton').prop('disabled', true);
+                    });
+            }
+
+            // Branch Name Validation
+            var debounceTimerArabic;
+            var debounceTimerEnglish;
+
+            $('#BranchArabicName').on('input', debounce(function () {
+                validateName('/Branch/CheckArabicName', 'BranchArabicName', '#validationAr');
+            }, 500));
+
+            $('#BranchEnglishName').on('input', debounce(function () {
+                validateName('/Branch/CheckEnglishName', 'BranchEnglishName', '#validationEn');
+            }, 500));
+
+            // Approval Status Change
+            $('#approveStatusId').change(function () {
+            if ($(this).val() !== '3') {
+                $('#reasonForRejection').val('').hide();
+                $('#reason').hide();
+            }
+            else {
+                $('#reason').show();
+                $('#reasonForRejection').show();
+            }
+            });
+
+            // Trigger initial check
+            updateSubmitButtonState();
+        });
+</script>
+

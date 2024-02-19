@@ -1,0 +1,53 @@
+﻿@model LegelProNewVersion.ViewModels.AllSystemConfigViewModel
+@{
+    ViewBag.Title = "WelcomePage";
+    Layout = null;
+}
+
+
+
+<link href="~/css/welcome-page-style.css" rel="stylesheet" />
+
+
+<h3 class="text-ar">@Model.SystemConfig.WelcomeScreenTextArabic</h3>
+
+<div class="style-logo">
+    <img src="@Model.SystemConfig.WelcomeScreenImage" />
+</div>
+
+<h3 class="text-en">@Model.SystemConfig.WelcomeScreenTextEnglish</h3>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    debugger
+    var details;
+    async function getData() {
+        debugger
+        await $.ajax({
+            url: '/api/Setting/getWelcomePageInterval',
+            type: 'GET',
+            success: function (result) {
+                debugger
+                details = result;
+            },
+            error: function () { alert("Whooaaa! Something went wrong..") },
+        });
+    }
+    $(document).ready(function () {
+        var result = getData();
+                
+        $.when(result).done(function (statistic) {
+            if (result) {
+                debugger
+                var interval = parseInt(details.welcomeScreenTimeInterval) * 1000;
+                setInterval(function () {
+                    window.location = details.loginPath;
+                }, interval)
+            }
+            else {
+                window.location = "/SystemConfig/MainConfig"
+            }
+          
+        });
+    });
+    debugger
+</script>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<LegelProNewVersion.Models.tbl_MainStyle>
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Ehm.styles.css" asp-append-version="true" />
+<link href="/css/main-config-style.css" rel="stylesheet" />
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="/SystemConfig/MainConfig">System Config</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/SystemConfig/LoginStyle">Login Style</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Main Style</a>
+    </li>
+</ul>
+<h2>Main Style</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="CreateMainStyle">Create New Main Style</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StyleNameArabic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StyleNameEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescriptionArabic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescriptionEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WelcomePageImagePath)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StyleNameArabic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StyleNameEnglish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescriptionArabic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescriptionEnglish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WelcomePageImagePath)
+                </td>
+                <td><a class="btn btn-primary" asp-action="EditMainStyle" asp-route-id="@item.Id">Update</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

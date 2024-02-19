@@ -1,0 +1,56 @@
+﻿@model tbl_Mailer
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+
+<form method="post" class="row g-3">
+    <input type="hidden" asp-for="MailerId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="MailerArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.MailerArabicName)
+            </div>
+            <div class="col-2">
+                <label asp-for="MailerEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.MailerEnglishName)
+            </div>
+
+            @if (isRTL)
+            {
+                <div class="col-2">
+                    <label>@localizer["ApproveStatus"]</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.tbl_ApproveStatus.ApproveArabicName)
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label>@localizer["ApproveStatus"]</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.tbl_ApproveStatus.ApproveEnglishName)
+                </div>
+            }
+            <div class="col-2">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.ReasonForRejection)
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/Mailer/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+    </div>
+</form>

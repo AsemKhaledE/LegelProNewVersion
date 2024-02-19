@@ -1,0 +1,143 @@
+﻿@model UserRoleViewModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+<link href="/css/style-popup-add-employee.css" rel="stylesheet" />
+
+<form asp-action="Edit" class="row g-3" id="myForm">
+    <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="DepartmentId" />
+    <input type="hidden" asp-for="SubDepartmentId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label>@localizer["UserName"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="tbl_UserRoles!.FirstOrDefault()!.User.UserName" type="text" class="form-control" maxlength="50" />
+
+            </div>
+            <div class="col-2">
+                <label>@localizer["Arabic Name"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="tbl_UserRoles!.FirstOrDefault()!.tbl_Employee.EmployeeArabicName" type="text" class="form-control" maxlength="50" />
+
+            </div>
+            <div class="col-2">
+                <label>@localizer["English Name"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="tbl_UserRoles!.FirstOrDefault()!.tbl_Employee.EmployeeEnglishName" type="text" class="form-control" maxlength="50" />
+
+            </div>
+            <div class="col-2">
+                <label>@localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="tbl_UserRoles!.FirstOrDefault()!.tbl_Department.DepartmentEnglishName" type="text" class="form-control" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label>@localizer["SubDepartments"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="tbl_UserRoles!.FirstOrDefault()!.SubDepartment.SubDepartmentEnglishName" type="text" class="form-control" maxlength="50" />
+
+            </div>
+
+            <div class="col-md-20">
+                <label>Select Pages</label>
+                <table class="table" id="pagesTableContainer">
+                    <thead>
+                        <tr>
+                            <th>@localizer["Page Name AR"]</th>
+                            <th>@localizer["Page Name EN"]</th>
+                            <th>@localizer["Permission View"]</th>
+                            <th>@localizer["Permission Add"]</th>
+                            <th>@localizer["Permission Edit"]</th>
+                            <th>@localizer["Permission Details"]</th>
+                            <th>@localizer["Permission Delete"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SelectedPages != null)
+                        {
+                            @for (int i = 0; i < Model.SelectedPages.Count; i++)
+                            {
+                                <input hidden type="text" asp-for="@Model.SelectedPages[i].PageId" />
+                                var item = Model.SelectedPages[i];
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <input disabled type="text" asp-for="@Model.SelectedPages[i].RoleNameAr" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <input disabled type="text" asp-for="@Model.SelectedPages[i].RoleNameEn" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsView" class="form-check-input is-view-checkbox"
+                                                   data-subroleid="@Model.SelectedPages[i].SubRoleId" onclick="handleIsViewCheckbox(this, @i)" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsAdd" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsEdit" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsDetails" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsDelete" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            <span id="errorContainer" class="text-danger style-validation"></span>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a type="button" href="/UserRole/Index" class="btn btn-secondary">@localizer["close"]</a>
+                <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("ValidateSelectedPages", "UserRole")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.isValid) {
+                        $('#myForm').unbind('submit').submit();
+                    } else {
+                        $('#errorContainer').text(data.errorMessage);
+                    }
+                }
+            });
+        });
+    });
+</script>

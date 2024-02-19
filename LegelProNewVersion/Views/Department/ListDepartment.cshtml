@@ -1,0 +1,230 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<tbl_Department>
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+
+<link href="/css/font-client.css" rel="stylesheet">
+<link href="/css/icons-setting.css" rel="stylesheet">
+
+<div class="col-sm-6 size-card-header">
+    <div class="card" style="height:220px;">
+        <div class="card-header">
+            <div class="row g-5">
+                <div class="col-auto">
+                    <i class="material-icons icons">settings</i>
+                    @localizer["Departments"]
+                </div>
+                <div class="col-auto">
+                    <input id="updateStatusForStatus2Button" class="btn btn-success style-btn-approve" type="submit" value="@localizer["ApproveAll"]" />
+                </div>
+                <div class="col-auto">
+                    <input id="updateStatusForStatus3Button" class="btn btn-danger style-btn-denial" type="submit" value="@localizer["DenialAll"]" />
+                </div>
+                <div class="col-auto div-btn-search">
+                    <input class="btn btn-outline-info button_search" type="submit" value="@localizer["search"]" />
+                </div>
+                <div class="col-auto div-btn-add">
+                    <input id="showModalEntitiesAddBtn" data-target="#addEntitiesModal" class="btn btn-success button_add" type="submit" value="@localizer["new-add"]" />
+                    <partial name="_DepartmentForm" model="new DepartmentViewModel()">
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-5">
+                <div class="col-2">
+                    <label class="col-form-label">@localizer["name-arabic"]</label>
+                </div>
+                <div class="col-md-4" style="align-content:center;">
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-2">
+                    <label class="col-form-label">@localizer["name-english"]</label>
+                </div>
+                <div class="col-md-4" style="align-content:center;">
+                    <input type="text" class="form-control">
+                </div>
+                <div>
+                    <input class="btn btn-danger btn-delete-field" type="submit" value="@localizer["clear-fields"]" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="ShowFormModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="updateModalLabel">@localizer["UpdateDepartment"]</h5>
+            </div>
+            <div class="modal-body">
+                <div id="editFormContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="ShowModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="detailsModalLabel">@localizer["DetailsDepartment"]</h5>
+            </div>
+            <div class="modal-body">
+                <div id="detailsFormContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-6 size-card-header result-search size-header-entities">
+    <div class="card">
+        <div class="card-header">
+            <i class="material-icons icons">settings</i>
+            @localizer["research-results"]
+        </div>
+        <div class="card-body">
+            <table id="Table_Datatable" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">@localizer["name-arabic"]</th>
+                        <th scope="col">@localizer["name-english"]</th>
+                        <th scope="col">@localizer["branchs"]</th>
+                        <th scope="col">@localizer["ApproveStatus"]</th>
+                        <th scope="col">@localizer["ReasonForRejection"]</th>
+                        <th scope="col">@localizer["settings"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.DepartmentArabicName</th>
+                            <td>@item.DepartmentEnglishName</td>
+                            @if (isRTL)
+                            {
+                                <td>@item.tbl_Branch.BranchArabicName</td>
+                                <td>@item.tbl_ApproveStatus.ApproveArabicName</td>
+                            }
+                            else
+                            {
+                                <td>@item.tbl_Branch.BranchEnglishName</td>
+                                <td>@item.tbl_ApproveStatus.ApproveEnglishName</td>
+                            }
+                            <td>@item.ReasonForRejection</td>
+                            <td>
+                                <div class="dropdown">
+                                    <span class="style-icon" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fa fa-gear" style="color:#0d9edf"></i></span>
+                                    <ul class="dropdown-menu color-icon-setting" aria-labelledby="dropdownMenuButton1">
+                                        <li><a onclick="btn_update(@item.DepartmentId)" class="dropdown-item setting-item"><i class='fas fa-edit'></i> @localizer["Edit"]</a></li>
+                                        <li><a onclick="btn_details(@item.DepartmentId)" class="dropdown-item setting-item"><i class='fas fa-info'></i>  @localizer["details"]</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/momentjs/moment.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datetime-moment/datetime-moment.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables-buttons/dataTables.buttons.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js" asp-append-version="true"></script>
+    <script src="~/js/App.js" asp-append-version="true"></script>
+            }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function btn_update(departmentId) {
+        debugger
+        $.get(`/Department/GetDepartmentById?departmentId=${departmentId}`, function (data) {
+            $("#editFormContainer").html(data);
+            $("#ShowFormModal").show();
+        });
+    }
+
+    function btn_details(departmentId) {
+        debugger
+        $.get(`/Department/GetDetails?departmentId=${departmentId}`, function (data) {
+            $("#detailsFormContainer").html(data);
+            $("#ShowModal").show();
+        });
+    }
+
+    $(document).ready(function () {
+        // Function to check if all Departments have ApproveStatusId = 2
+        function areAllApproved() {
+            // Perform an AJAX call to check the status on the server
+            $.ajax({
+                url: '/Department/CheckAllApproved',
+                type: 'GET',
+                success: function (data) {
+                    if (data.success && data.allApproved) {
+                        // If all Departments are approved, hide the button
+                        $('#updateStatusForStatus2Button').hide();
+                        $('#updateStatusForStatus3Button').hide();
+                    } else {
+                        // If not all Departments are approved, show the button
+                        $('#updateStatusForStatus2Button').show();
+                        $('#updateStatusForStatus3Button').show();
+                    }
+                },
+                error: function () {
+                    console.error('An error occurred while checking branch status.');
+                }
+            });
+        }
+
+        // Initial check on page load
+        areAllApproved();
+
+        // Attach the check function to the button click event
+        $('#updateStatusForStatus2Button').click(function () {
+            if (confirm('هل تريد الموافقة علي كل من في قائمة الانتظار؟') == true) {
+                $.ajax({
+                    url: '/Department/UpdateApproveStatus',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.success) {
+                            // Update the UI or perform other actions on success
+                            alert('تم الموافقة بنجاح!');
+                            window.location.href = "/Department/Index";
+                        } else {
+                            alert('Failed to update approval status for branches with status Pending.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while processing the request.');
+                    }
+                });
+            }
+        });
+        $('#updateStatusForStatus3Button').click(function () {
+            if (confirm('هل تريد رفض كل من في قائمة الانتظار؟') == true) {
+                $.ajax({
+                    url: '/Department/UpdateDenialStatus',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.success) {
+                            // Update the UI or perform other actions on success
+                            alert('!تم الموافقة بنجاح');
+                            window.location.href = "/Department/Index";
+                        } else {
+                            alert('Failed to update denial status for branches with status Pending.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while processing the request.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+

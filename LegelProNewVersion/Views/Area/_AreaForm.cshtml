@@ -1,0 +1,122 @@
+﻿@model AreaViewModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="exampleModalLabel">@localizer["add-a-new-area"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <input type="hidden" id="areaId" value="@Model?.AreaId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="AreaArabicName" id="areaArabicName" name="AreaArabicName">@localizer["name-arabic"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="AreaArabicName" type="text" class="form-control" />
+                            <div id="validationAr"></div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="AreaEnglishName" id="branchEnglishName" name="BranchEnglishName">@localizer["name-english"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="AreaEnglishName" type="text" class="form-control" />
+                            <span id="validationEn" class="text-danger"></span>
+                        </div>
+                        <div class="col-2" hidden>
+                            <label>@localizer["ApproveStatus"]</label>
+                        </div>
+                        <div class="col-md-4" hidden>
+                            <select asp-for="ApproveStatusId" asp-items="ViewBag.ApproveStatus" class="form-control" id="approveStatusId"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/Area/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" id="submitButton" class="btn btn-primary color-btnSave" disabled>@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        var debounceTimerEnglish;
+        var debounceTimerArabic;
+
+        $('#AreaEnglishName').on('input', debounce(function () {
+            var areaEnglishName = $('#AreaEnglishName').val();
+            validate('/Area/CheckEnglishName', { AreaEnglishName: areaEnglishName }, '#validationEn');
+        }, 500));
+
+        $('#AreaArabicName').on('input', debounce(function () {
+            var areaArabicName = $('#AreaArabicName').val();
+            validate('/Area/CheckArabicName', { AreaArabicName: areaArabicName }, '#validationAr');
+        }, 500));
+
+        function validate(apiEndpoint, inputData, validationResultSelector) {
+            $.ajax({
+                url: apiEndpoint,
+                type: 'POST',
+                data: inputData,
+            })
+                .done(function (result) {
+                    var validationResultElement = $(validationResultSelector);
+                    if (result) {
+                        validationResultElement.html('<span class="text-danger">' + result + '</span>');
+                        // If validation fails, disable both inputs and the submit button
+                        $('#submitButton').prop('disabled', true);
+                    } else {
+                        validationResultElement.html("");
+                        // If validation passes, enable both inputs and update the submit button state
+                        $('#AreaEnglishName, #AreaArabicName, #submitButton').prop('disabled', false);
+                        updateSubmitButtonState();
+                    }
+                })
+                .fail(function (error) {
+                    $(validationResultSelector).html('<div class="validation-error">' + error.responseJSON.error + '</div>');
+                    // If there's a validation error, disable both inputs and the submit button
+                    $('#AreaEnglishName, #AreaArabicName, #submitButton').prop('disabled', true);
+                });
+        }
+
+        function updateSubmitButtonState() {
+            var isEnglishNameEmpty = $('#AreaEnglishName').val().trim() === '';
+            var isArabicNameEmpty = $('#AreaArabicName').val().trim() === '';
+
+            var isSubmitButtonDisabled = isEnglishNameEmpty || isArabicNameEmpty || $('#validationEn').text() || $('#validationAr').text();
+            $('#submitButton').prop('disabled', isSubmitButtonDisabled);
+        }
+
+        updateSubmitButtonState();
+    });
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            // setTimeout => This helps reduce the number of API calls while the user is typing fast.
+            timer = setTimeout(func, delay);
+        };
+    }
+
+</script>
+

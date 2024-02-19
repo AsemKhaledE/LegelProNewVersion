@@ -1,0 +1,188 @@
+﻿@model SubDepartmentRoleViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+<link href="/css/style-popup-add-employee.css" rel="stylesheet" />
+
+<form asp-action="Create" class="row g-3" id="myForm">
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label>@localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="DepartmentId" id="department" asp-items="ViewBag.Departments" class="form-control icon-down" style="width:100%; height:45px;" class="form-control">
+                    @if (isRTL)
+                    {
+                        <option value="">اختر الادارة الرئيسية</option>
+                    }
+                    else
+                    {
+                        <option value="">Select Department</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["SubDepartments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="SubDepartmentId" class="form-control" id="subDepartmentId" name="SubDepartmentId">
+                    @if (isRTL)
+                    {
+                        <option value="">اختر الادارة الفرعية</option>
+                    }
+                    else
+                    {
+                        <option value="">Select Sub-Department</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-20">
+                <table class="table" id="pagesTableContainer">
+                    <thead>
+                        <tr>
+                            <th>@localizer["Page Name AR"]</th>
+                            <th>@localizer["Page Name EN"]</th>
+                            <th>@localizer["Permission View"]</th>
+                            <th>@localizer["Permission Add"]</th>
+                            <th>@localizer["Permission Edit"]</th>
+                            <th>@localizer["Permission Details"]</th>
+                            <th>@localizer["Permission Delete"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SelectedPages != null)
+                        {
+                            @for (int i = 0; i < Model.SelectedPages.Count; i++)
+                            {
+                                var item = Model.SelectedPages[i];
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <input disabled type="text" asp-for="@Model.SelectedPages[i].RoleNameAr" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <input disabled type="text" asp-for="@Model.SelectedPages[i].RoleNameEn" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsView" class="form-check-input is-view-checkbox"
+                                                   data-subroleid="@Model.SelectedPages[i].SubRoleId" onclick="handleIsViewCheckbox(this, @i)" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsAdd" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsEdit" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsDetails" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="@Model.SelectedPages[i].IsDelete" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            <span id="errorContainer" class="text-danger style-validation"></span>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a type="button" href="/SubDepartRole/Index" class="btn btn-secondary">@localizer["close"]</a>
+                <button type="submit" id="submitButton" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#closeEntitiesAddBtn').click(function () {
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        $("#department").change(function () {
+            var departmentId = $("#department").val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetSubDepartment", "Employee")/' + departmentId,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (data) {
+                    var subDepartmentDropdown = $("#subDepartmentId");
+                    subDepartmentDropdown.empty();
+
+                    $.each(data, function (index, item) {
+                        subDepartmentDropdown.append(
+                            $("<option></option>")
+                                .text(item.subDepartmentEnglishName)
+                                .val(item.subDepartmentId)
+                        );
+                    });
+
+                    updateFormState();
+                },
+                error: function (error) {
+                    var subDepartmentDropdown = $("#subDepartmentId");
+                    subDepartmentDropdown.empty();
+                    subDepartmentDropdown.append(
+                        $("<option></option>")
+                            .text("Please Add Department")
+                            .val(0)
+                    );
+                    updateFormState();
+                }
+            });
+        });
+
+        function updateFormState() {
+            var selectedDepartment = $('#department').val();
+            var selectedSubDepartment = $('#subDepartmentId').val();
+            var pagesTableContainer = $('#pagesTableContainer');
+            var submitButton = $('#submitButton');
+
+            if (selectedDepartment && selectedSubDepartment) {
+                pagesTableContainer.prop('disabled', false).show();
+                submitButton.prop('disabled', false);
+            } else {
+                pagesTableContainer.prop('disabled', true).hide();
+                submitButton.prop('disabled', true);
+            }
+        }
+        updateFormState();
+    });
+
+    $(document).ready(function () {
+        $('#myForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("ValidateSelectedPages", "SubDepartRole")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.isValid) {
+                        $('#myForm').unbind('submit').submit();
+                    } else {
+                        $('#errorContainer').text(data.errorMessage);
+                    }
+                }
+            });
+        });
+    });
+</script>

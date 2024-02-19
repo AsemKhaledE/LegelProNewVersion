@@ -1,0 +1,146 @@
+﻿@model EmployeeViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<form asp-action="Edit" class="row g-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="EmployeeId" />
+    <input type="hidden" asp-for="UserId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="EmployeeArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="EmployeeArabicName" type="text" class="form-control" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label asp-for="EmployeeEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="EmployeeEnglishName" type="text" class="form-control" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label asp-for="UserName">@localizer["UserName"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="UserName" type="username" class="form-control" required="required" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label asp-for="Address">@localizer["Address"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="Address" type="text" class="form-control" required="required" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label asp-for="Email">@localizer["Email"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="Email" type="text" class="form-control" required="required" maxlength="50" />
+            </div>
+            <div class="col-2">
+                <label asp-for="UserStartDate">@localizer["UserStartDate"]</label>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input asp-for="UserStartDate" class="form-control" required="required" />
+                </div>
+            </div>
+            <div class="col-2">
+                <label asp-for="UserEndDate">@localizer["UserEndDate"]</label>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input asp-for="UserEndDate" class="form-control" required="required" />
+                </div>
+            </div>
+            <div class="col-2">
+                <label asp-for="PhoneNumber">@localizer["PhoneNumber"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="PhoneNumber" type="text" class="form-control" maxlength="11" />
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="ApproveStatusId" asp-items="ViewBag.ApproveStatus" class="form-control" id="approveStatusId"></select>
+            </div>
+            <div class="col-2" id="reasonLabel">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" id="reasonForRejection" />
+            </div>
+            <div class="col-2">
+                <label>@localizer["jobs"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="tbl_JobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Jobs" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["TypeOfJob"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="TypeOfJobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.TypeOfJobs" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["branchs"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="BranchId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Branchs" class="form-control">
+                    <option value="">Select Branch</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="DepartmentId" id="department" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Departments" class="form-control">
+                    <option value="">Select Department</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["SubDepartments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select asp-for="SubDepartmentId" id="department" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.SubDepartments" class="form-control">
+                    <option value="">Select Sub-Department</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input asp-for="ReasonForRejection" type="text" class="form-control" maxlength="50" required />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/Employee/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+        <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#approveStatusId').change(function () {
+            if ($(this).val() !== '3') {
+                $('#reasonForRejection').val('').hide();
+                $('#reasonLabel').hide();
+            }
+            else {
+                $('#reasonLabel').show();
+                $('#reasonForRejection').show();
+            }
+        });
+    });
+</script>

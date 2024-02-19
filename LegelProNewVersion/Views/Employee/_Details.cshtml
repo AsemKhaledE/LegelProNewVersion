@@ -1,0 +1,120 @@
+﻿@model EmployeeViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<form method="post" class="row g-3">
+    <input type="hidden" asp-for="EmployeeId" />
+    <div class="modal-body">
+        <div class="row g-4">
+            <div class="col-2">
+                <label asp-for="EmployeeArabicName">@localizer["name-arabic"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="EmployeeArabicName" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label asp-for="EmployeeEnglishName">@localizer["name-english"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="EmployeeEnglishName" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label asp-for="UserName">@localizer["UserName"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="UserName" type="username" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label asp-for="Address">@localizer["Address"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="Address" type="text" class="form-control" required="required" />
+            </div>
+            <div class="col-2">
+                <label asp-for="Email">@localizer["Email"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="Email" type="text" class="form-control" required="required" />
+            </div>
+            <div class="col-2">
+                <label asp-for="UserStartDate">@localizer["UserStartDate"]</label>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input readonly asp-for="UserStartDate" class="form-control" />
+                </div>
+            </div>
+            <div class="col-2">
+                <label asp-for="UserEndDate">@localizer["UserEndDate"]</label>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input readonly asp-for="UserEndDate" class="form-control" />
+                </div>
+            </div>
+            <div class="col-2">
+                <label asp-for="PhoneNumber">@localizer["PhoneNumber"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="PhoneNumber" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label>@localizer["ApproveStatus"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.ApproveStatus" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["ReasonForRejection"]</label>
+            </div>
+            <div class="col-md-4">
+                <input readonly asp-for="ReasonForRejection" type="text" class="form-control" />
+            </div>
+            <div class="col-2">
+                <label>@localizer["jobs"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="tbl_JobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Jobs" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["TypeOfJob"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="TypeOfJobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.TypeOfJobs" class="form-control">
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["branchs"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="BranchId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Branchs" class="form-control">
+                    <option value="">Select Branch</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["Departments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="DepartmentId" id="department" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.Departments" class="form-control">
+                    <option value="">Select Department</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>@localizer["SubDepartments"]</label>
+            </div>
+            <div class="col-md-4">
+                <select readonly asp-for="SubDepartmentId" id="department" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.SubDepartments" class="form-control">
+                    <option value="">Select Sub-Department</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/Employee/Index" type="button" class="btn btn-secondary">@localizer["close"]</a>
+    </div>
+</form>

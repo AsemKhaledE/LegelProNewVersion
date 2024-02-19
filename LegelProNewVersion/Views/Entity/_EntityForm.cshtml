@@ -1,0 +1,86 @@
+﻿@model EntityViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+<link href="/css/style-popup-add-client.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="exampleModalLabel">@localizer["add-a-new-entity"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="entityId" value="@Model?.EntitieId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="EntitieArabicName">@localizer["name-arabic"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="EntitieArabicName" type="text" class="form-control" required="required" />
+                        </div>
+                        
+                        <div class="col-2">
+                            <label asp-for="EntitieEnglishName">@localizer["name-english"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="EntitieEnglishName" type="text" class="form-control" required="required" />
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["ApproveStatus"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="ApproveStatusId" asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="ViewBag.ApproveStatus" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-2" id="reasonLabel" style="display: none;">
+                            <label asp-for="ReasonForRejection">@localizer["ReasonForRejection"]</label>
+                        </div>
+                        <div class="col-md-4" id="reasonInput" style="display: none;">
+                            <input asp-for="ReasonForRejection" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/Entity/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" class="btn btn-primary color-btnSave" id="btnAdd">@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    // if ApproveStatusId == 3
+    document.getElementById('ApproveStatusId').addEventListener('change', function () {
+        var selectedValue = this.value;
+        var reasonLabel = document.getElementById('reasonLabel');
+        var reasonInput = document.getElementById('reasonInput');
+
+        if (selectedValue == 3) {
+            reasonLabel.style.display = 'block';
+            reasonInput.style.display = 'block';
+        } else {
+            reasonLabel.style.display = 'none';
+            reasonInput.style.display = 'none';
+        }
+    });
+</script>

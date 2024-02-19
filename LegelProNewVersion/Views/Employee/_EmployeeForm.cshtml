@@ -1,0 +1,262 @@
+﻿@model EmployeeViewModel
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    List<SelectListItem> dropdownJobs = ViewData["JobItem"] as List<SelectListItem>;
+    List<SelectListItem> dropdownBranchs = ViewData["BranchItem"] as List<SelectListItem>;
+    List<SelectListItem> dropdownApproveStatus = ViewData["ApproveStatusItem"] as List<SelectListItem>;
+    List<SelectListItem> dropdownTypeOfJob = ViewData["TypeOfJobItem"] as List<SelectListItem>;
+    List<SelectListItem> dropdownDepartments = ViewData["DepartmentItem"] as List<SelectListItem>;
+    List<SelectListItem> dropdownSupDepartments = ViewData["SupDepartmentItem"] as List<SelectListItem>;
+ var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+<link href="/css/style-popup-add-employee.css" rel="stylesheet" />
+
+<div class="modal fade" id="addEntitiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-text" id="exampleModalLabel">@localizer["add-a-new-employee"]</h5>
+                <button type="button" id="closeEntitiesAddBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" class="row g-3" id="entityForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="employeeId" value="@Model?.EmployeeId" />
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-2">
+                            <label asp-for="EmployeeArabicName">@localizer["name-arabic"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="EmployeeArabicName" type="text" class="form-control" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="EmployeeEnglishName">@localizer["name-english"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="EmployeeEnglishName" type="text" class="form-control" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="UserName">@localizer["UserName"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="UserName" type="text" class="form-control" required="required" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="Address">@localizer["Address"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Address" type="text" class="form-control" required="required" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="Password">@localizer["Password"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Password" type="password" class="form-control" required="required" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="Email">@localizer["Email"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="Email" type="email" class="form-control" required="required" maxlength="50" />
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="UserStartDate">@localizer["UserStartDate"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input asp-for="UserStartDate" class="form-control" required="required" />
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="UserEndDate">@localizer["UserEndDate"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input asp-for="UserEndDate" class="form-control" required="required" />
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="PhoneNumber">@localizer["PhoneNumber"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input asp-for="PhoneNumber" type="text" class="form-control" maxlength="11" />
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["ApproveStatus"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="ApproveStatusId" asp-for="ApproveStatusId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownApproveStatus" class="form-control">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر الحالة</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select ApproveStatus</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-2" id="reasonLabel" style="display: none;">
+                            <label asp-for="ReasonForRejection">@localizer["ReasonForRejection"]</label>
+                        </div>
+                        <div class="col-md-4" id="reasonInput" style="display: none;">
+                            <input asp-for="ReasonForRejection" type="text" class="form-control" />
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["jobs"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="tbl_JobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownJobs" class="form-control">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر الوظيفة</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select Jobs</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["TypeOfJob"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="TypeOfJobId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownTypeOfJob" class="form-control">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر نوع الوظيفة</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select Type Of Jobs</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["branchs"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="BranchId" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownBranchs" class="form-control">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر الفرع</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select Branch</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["Departments"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="DepartmentId" id="department" class="form-control icon-down" style="width:100%; height:45px;" asp-items="dropdownDepartments" class="form-control">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر القسم الرئيسي</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select Department</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>@localizer["SubDepartments"]</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select asp-for="SubDepartmentId" class="form-control" id="subDepartmentId" name="SubDepartmentId">
+                                @if (isRTL)
+                                {
+                                    <option value="">اختر القسم الفرعي</option>
+                                }
+                                else
+                                {
+                                    <option value="">Select Sub-Department</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/Employee/Index" type="button" class="btn btn-secondary" data-dismiss="modal">@localizer["close"]</a>
+                    <button type="submit" class="btn btn-primary color-btnSave">@localizer["save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $('#showModalEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('show');
+    });
+    $('#closeEntitiesAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $('#mainCloseAddBtn').click(function () {
+
+        $('#addEntitiesModal').modal('toggle');
+    });
+    $(document).ready(function () {
+        $("#department").change(function () {
+            var departmentId = $("#department").val();
+            debugger
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("GetSubDepartment", "Employee")/' + departmentId,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (data) {
+
+                   debugger
+                    var subDepartmentDropdown = $("#subDepartmentId");
+                    subDepartmentDropdown.empty();
+                        $.each(data, function (index, item) {
+                            subDepartmentDropdown.append(
+                                $("<option>Select Sub-Department</option>")
+                                .text("Select Sub-Department").val("")
+                                    .text(item.subDepartmentEnglishName)
+                                    .val(item.subDepartmentId)
+                            );
+                        });
+                },
+                    error: function (error) {
+                    debugger
+                    var subDepartmentDropdown = $("#subDepartmentId");
+                    subDepartmentDropdown.empty();
+                    subDepartmentDropdown.append(
+                        $("<option> </option>")
+                            .text("Please Add Department")
+                            .val(0));
+                    }
+            });
+        });
+    });
+    // if ApproveStatusId == 3
+    document.getElementById('ApproveStatusId').addEventListener('change', function () {
+        var selectedValue = this.value;
+        var reasonLabel = document.getElementById('reasonLabel');
+        var reasonInput = document.getElementById('reasonInput');
+
+        if (selectedValue == 3) {
+            reasonLabel.style.display = 'block';
+            reasonInput.style.display = 'block';
+        } else {
+            reasonLabel.style.display = 'none';
+            reasonInput.style.display = 'none';
+        }
+    });
+</script>
+

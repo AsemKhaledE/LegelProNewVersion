@@ -1,0 +1,31 @@
+.modal-dialog {
+    max-width: 50%;
+    margin-top: 30px;
+    background-color: white;
+}
+
+.modal-header {
+    height: 55px;
+    background-color: #0d9edf;
+}
+
+.close {
+    position:relative;
+    background-color:#0d9edf;
+    height: 50px;
+    border: none;
+    padding:0;
+    position: relative;
+    color: black;
+    top:0px
+}
+.color-btnSave {
+    background-color: #0d9edf;
+}
+.color-text{
+    color:white;
+}
+.form-check .form-check-input {
+    margin-left: -1.5em;
+    float:none;
+}

@@ -1,0 +1,165 @@
+﻿@model LegelProNewVersion.ViewModels.UpdateSystemConfigViewModel
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Ehm.styles.css" asp-append-version="true" />
+<link href="/css/main-config-style.css" rel="stylesheet" />
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">System Config</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/SystemConfig/LoginStyle">Login Style</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/SystemConfig/MainStyle">Main Style</a>
+    </li>
+</ul>
+<h2>System Config</h2>
+
+<form asp-action="EditMainConfig">
+    <div class="form-group col-md-4 mb-3">
+        <input type="submit" value="Save" class="btn btn-outline-info btn-submit" />
+        <a asp-action="MainConfig" class="btn btn-outline-info btn-back">Back to List</a>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-floating mb-2">
+        <span>Enable Active Directory </span>
+        <input class="Mycheck" type="checkbox" name="Mycheck" value="1" onchange="valueChanged()" />
+    </div>
+    <div class="activeDirectory">
+        <div class="row">
+            <div class="form-check" style="position: absolute;margin-left:5px;">
+                <label asp-for="ActiveDirectoryIsAttachment" class="form-check-label form-checkbox" for="flexSwitchCheckChecked"></label>
+                <input asp-for="ActiveDirectoryIsAttachment" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+
+            </div>
+            <div class="form-check" style="position: absolute; margin-left:250px;">
+                <label asp-for="ActiveDirectoryIsIbmAttachment" class="form-check-label form-checkbox" for="flexSwitchCheckChecked"></label>
+                <input asp-for="ActiveDirectoryIsIbmAttachment" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+
+            </div>
+            <div class="form-check" style="position: absolute; margin-left:520px;">
+                <label asp-for="ActiveDirectoryIsSendMail" class="form-check-label form-checkbox" for="flexSwitchCheckChecked"></label>
+                <input asp-for="ActiveDirectoryIsSendMail" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+
+            </div>
+            <div class="form-group col-md-3" style="margin-top:30px;">
+                <label asp-for="ActiveDirectoryIbmLink" class="control-label mb-2">Active Directory Ibm Link</label>
+                <input asp-for="ActiveDirectoryIbmLink" class="form-control" placeholder="Active Directory Ibm Link" />
+                <span asp-validation-for="ActiveDirectoryIbmLink" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3" style="margin-top:30px;">
+                <label asp-for="ActiveDirectoryDomain" class="control-label mb-2">Active Directory Domain</label>
+                <input asp-for="ActiveDirectoryDomain" class="form-control" placeholder="Active Directory Domain" />
+                <span asp-validation-for="ActiveDirectoryDomain" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3" style="margin-top:30px;">
+                <label asp-for="ActiveDirectoryUserName" class="control-label mb-2">Active Directory User Name</label>
+                <input asp-for="ActiveDirectoryUserName" class="form-control" placeholder="Active Directory User Name" />
+                <span asp-validation-for="ActiveDirectoryUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3" style="margin-top:30px;">
+                <label asp-for="ActiveDirectoryPassword" class="control-label mb-2">Active Directory Password</label>
+                <input asp-for="ActiveDirectoryPassword" class="form-control" placeholder="Active Directory Password" />
+                <span asp-validation-for="ActiveDirectoryPassword" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label asp-for="BankNameArabic" class="control-label mb-2">BankNameArabic</label>
+            <input asp-for="BankNameArabic" class="form-control" placeholder="Bank Name Arabic" />
+            <span asp-validation-for="BankNameArabic" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BankNameEnglish" class="control-label mb-2">BankNameEnglish</label>
+            <input asp-for="BankNameEnglish" class="form-control" placeholder="Bank Name English" />
+            <span asp-validation-for="BankNameEnglish" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BankBranchNumber" class="control-label mb-2">BankBranchNumber</label>
+            <input asp-for="BankBranchNumber" class="form-control" placeholder="Bank Branch Number" />
+            <span asp-validation-for="BankBranchNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BankLogoPath" class="control-label mb-2">BankLogoPath</label>
+            <input asp-for="BankLogoPath" class="form-control" placeholder="Bank Logo Path" />
+            <span asp-validation-for="BankLogoPath" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BankImagePath" class="control-label mb-2">Bank Image Path</label>
+            <input asp-for="BankImagePath" class="form-control" placeholder="Bank Image Path" />
+            <span asp-validation-for="BankImagePath" class="text-danger"></span>
+        </div>
+        <div class="form-check form-switch col-md-4" style=" margin-top:35px; margin-left:0;">
+            <label asp-for="EnableMultiLanguage" style=" justify-content: right;" class="form-check-label form-checkbox" for="flexSwitchCheckChecked"></label>
+            <input asp-for="EnableMultiLanguage" style=" justify-content: right;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        </div>
+        <div class="form-check form-switch col-md-4" style=" margin-top:35px; margin-left:0;">
+            <label asp-for="EnableOTP" style=" justify-content: right;" class="form-check-label form-checkbox" for="flexSwitchCheckChecked"></label>
+            <input asp-for="EnableOTP" style=" justify-content: right;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label asp-for="tbl_LoginStyleId">LoginStyles</label>
+            <select class="form-select" asp-for="tbl_LoginStyleId" asp-items="ViewBag.LoginStyles" aria-label="State">
+            </select>
+
+            <span asp-validation-for="tbl_LoginStyleId" class="text-danger"></span>
+
+        </div>
+        <div class="form-group col-md-3">
+            <label asp-for="tbl_MainStyleId">MainStyles</label>
+            <select class="form-select" asp-for="tbl_MainStyleId" asp-items="ViewBag.MainStyles" aria-label="State">
+            </select>
+
+            <span asp-validation-for="tbl_MainStyleId" class="text-danger"></span>
+        </div>
+
+            <div class="form-group col-md-3">
+                <label asp-for="NumberOfMaxCreateUser" class="control-label mb-2">Number Of Max Create User</label>
+                <input asp-for="NumberOfMaxCreateUser" class="form-control" placeholder="Number Of Max Create User" />
+                <span asp-validation-for="NumberOfMaxCreateUser" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="NumberOfMaxUserLoginAtTime" class="control-label mb-2">Number Of Max User Login At Time</label>
+                <input asp-for="NumberOfMaxUserLoginAtTime" class="form-control" placeholder="Number Of Max User Login At Time" />
+                <span asp-validation-for="NumberOfMaxUserLoginAtTime" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-3">
+                <label asp-for="WelcomeScreenImage" class="control-label mb-2">Welcome Screen Image</label>
+                <input asp-for="WelcomeScreenImage" class="form-control" placeholder="Welcome Screen Image" />
+                <span asp-validation-for="WelcomeScreenImage" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-3">
+                <label asp-for="WelcomeScreenTimeInterval" class="control-label mb-2">Welcome Screen Time Interval</label>
+                <input asp-for="WelcomeScreenTimeInterval" class="form-control" placeholder="Welcome Screen Time Interval" />
+                <span asp-validation-for="WelcomeScreenTimeInterval" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-3">
+                <label asp-for="WelcomeScreenTextArabic" class="control-label mb-2">Welcome Screen Text Arabic</label>
+                <input asp-for="WelcomeScreenTextArabic" class="form-control" placeholder="Welcome Screen Text Arabic" />
+                <span asp-validation-for="WelcomeScreenTextArabic" class="text-danger"></span>
+            </div>
+        <div class="form-group col-md-3">
+                <label asp-for="WelcomeScreenTextEnglish" class="control-label mb-2">Welcome Screen Text English</label>
+                <input asp-for="WelcomeScreenTextEnglish" class="form-control" placeholder="Welcome Screen Text English" />
+                <span asp-validation-for="WelcomeScreenTextEnglish" class="text-danger"></span>
+            </div>
+
+
+        
+    </div>
+</form>
+<script type="text/javascript">
+    function valueChanged() {
+        if ($('.Mycheck').is(":checked"))
+            $(".activeDirectory").show();
+        else
+            $(".activeDirectory").hide();
+    }
+</script>

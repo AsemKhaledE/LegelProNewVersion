@@ -1,0 +1,73 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ehm</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @if (isRTL)
+    {
+        <link href="/css/style-setting-ar.css" rel="stylesheet">
+        <link href="/css/styel-dashboard-ar.css" rel="stylesheet" />
+        <link href="/css/main-config-style-ar.css" rel="stylesheet" />
+        <link href="/css/style-basic-information-ar.css" rel="stylesheet" />
+        <link href="/css/style-branch-data-ar.css" rel="stylesheet" />
+        <link href="/css/style-region-data-ar.css" rel="stylesheet" />
+        <link href="/css/style-types-of-mail-ar.css" rel="stylesheet" />
+        <link href="/css/style-jobs-ar.css" rel="stylesheet" />
+        <link href="/css/style-mailers-ar.css" rel="stylesheet" />
+        <link href="/css/style-the-importance-of-mail-ar.css" rel="stylesheet" />
+        <link href="/css/style-management-ar.css" rel="stylesheet" />
+        <link href="/css/style-entities-ar.css" rel="stylesheet" />
+        <link href="/css/style-popup-notification-ar.css" rel="stylesheet" />
+        <link href="/css/style-popup-add-ar.css" rel="stylesheet" />
+        <link href="/css/style-all-page-ar.css" rel="stylesheet" />
+        <link href="/css/style-validation.ar.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="/css/style-setting-en.css" rel="stylesheet">
+        <link href="/css/styel-dashboard-en.css" rel="stylesheet" />
+        <link href="/css/main-config-style-en.css" rel="stylesheet" />
+        <link href="/css/style-basic-information-en.css" rel="stylesheet" />
+        <link href="/css/style-branch-data-en.css" rel="stylesheet" />
+        <link href="/css/style-region-data-en.css" rel="stylesheet" />
+        <link href="/css/style-types-of-mail-en.css" rel="stylesheet" />
+        <link href="/css/style-jobs-en.css" rel="stylesheet" />
+        <link href="/css/style-mailers-en.css" rel="stylesheet" />
+        <link href="/css/style-the-importance-of-mail-en.css" rel="stylesheet" />
+        <link href="/css/style-management-en.css" rel="stylesheet" />
+        <link href="/css/style-entities-en.css" rel="stylesheet" />
+        <link href="/css/style-popup-notification-en.css" rel="stylesheet" />
+        <link href="/css/style-all-page-en.css" rel="stylesheet" />
+        <link href="/css/style-popup-add-en.css" rel="stylesheet" />
+        <link href="/css/style-validation.en.css" rel="stylesheet" />
+    }
+</head>
+<body>
+    <partial name="_dashboard" />
+
+    @RenderBody()
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+    <script src="/alertify.js/alertify.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="http://view.jquery.com/trunk/plugins/validate/jquery.validate.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
