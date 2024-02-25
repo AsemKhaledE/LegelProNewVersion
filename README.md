@@ -9,5 +9,3 @@ component together.
 - Developed the front-end style Login , style dashboard ,style sidebar
 and style popup crud operation using html ,css ,JavaScript.
 - add localization (AR & En)
-
-
