@@ -8,4 +8,4 @@ permissions to add , edit ,delete and control all content in site.
 component together.
 - Developed the front-end style Login , style dashboard ,style sidebar
   and style popup crud operation using html ,css ,JavaScript.
-- add localization (AR & En)
+- Using localization (AR & En)
